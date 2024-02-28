@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34221.43
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DzBlazorServerAppRadzen", "DzBlazorServerAppRadzen\DzBlazorServerAppRadzen.csproj", "{6C533398-BF45-4EAA-BFA7-ECD3207C104E}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "uniDBP", "uniDBP\uniDBP.sqlproj", "{887B826D-1078-4C00-9F04-C2A767CAEEE2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6C533398-BF45-4EAA-BFA7-ECD3207C104E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C533398-BF45-4EAA-BFA7-ECD3207C104E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C533398-BF45-4EAA-BFA7-ECD3207C104E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C533398-BF45-4EAA-BFA7-ECD3207C104E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{887B826D-1078-4C00-9F04-C2A767CAEEE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{887B826D-1078-4C00-9F04-C2A767CAEEE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{887B826D-1078-4C00-9F04-C2A767CAEEE2}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{887B826D-1078-4C00-9F04-C2A767CAEEE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{887B826D-1078-4C00-9F04-C2A767CAEEE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{887B826D-1078-4C00-9F04-C2A767CAEEE2}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3F9CE12B-EECD-4DEA-B9A7-A44F98EC3C74}
+	EndGlobalSection
+EndGlobal

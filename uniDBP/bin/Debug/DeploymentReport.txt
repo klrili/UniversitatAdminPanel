@@ -1,0 +1,45 @@
+﻿** Highlights
+     Tables that will be recreated with data migrated
+       None
+     Clustered indexes that will be dropped
+       None
+     Clustered indexes that will be created
+       None
+     Possible data issues
+       None
+
+** User actions
+     Create
+       [dbo].[Departaments] (Table)
+       [dbo].[DepartamentsInFacultet] (Table)
+       [dbo].[Facultets] (Table)
+       [dbo].[Groups] (Table)
+       [dbo].[Students] (Table)
+       Foreign Key: unnamed constraint on [dbo].[DepartamentsInFacultet] (Foreign Key)
+       Foreign Key: unnamed constraint on [dbo].[DepartamentsInFacultet] (Foreign Key)
+       Foreign Key: unnamed constraint on [dbo].[Groups] (Foreign Key)
+       Foreign Key: unnamed constraint on [dbo].[Students] (Foreign Key)
+       [dbo].[spDepartaments_GetAll] (Procedure)
+       [dbo].[spDepartaments_GetById] (Procedure)
+       [dbo].[spDepartaments_Update] (Procedure)
+       [dbo].[spDepartamentsInFacultet_Delete] (Procedure)
+       [dbo].[spDepartamentsInFacultet_GetAll] (Procedure)
+       [dbo].[spDepartamentsInFacultet_Insert] (Procedure)
+       [dbo].[spDepartamentsInFacultet_Update] (Procedure)
+       [dbo].[spFacultets_Delete] (Procedure)
+       [dbo].[spFacultets_GetAll] (Procedure)
+       [dbo].[spFacultets_GetById] (Procedure)
+       [dbo].[spFacultets_Insert] (Procedure)
+       [dbo].[spFacultets_Update] (Procedure)
+       [dbo].[spGroups_Delete] (Procedure)
+       [dbo].[spGroups_GetAll] (Procedure)
+       [dbo].[spGroups_GetById] (Procedure)
+       [dbo].[spGroups_Insert] (Procedure)
+       [dbo].[spGroups_Update] (Procedure)
+       [dbo].[spStudents_Delete] (Procedure)
+       [dbo].[spStudents_GetAll] (Procedure)
+       [dbo].[spStudents_GetById] (Procedure)
+       [dbo].[spStudents_Insert] (Procedure)
+       [dbo].[spStudents_Update] (Procedure)
+
+** Supporting actions

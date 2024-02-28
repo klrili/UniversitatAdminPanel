@@ -1,0 +1,6 @@
+C:\Users\kyrylo\source\repos\DzBlazorServerAppRadzen\uniDBP\bin\Debug\uniDBP.dacpac
+C:\Users\kyrylo\source\repos\DzBlazorServerAppRadzen\uniDBP\bin\Debug\uniDBP.dll
+C:\Users\kyrylo\source\repos\DzBlazorServerAppRadzen\uniDBP\bin\Debug\uniDBP.pdb
+C:\Users\kyrylo\source\repos\DzBlazorServerAppRadzen\uniDBP\obj\Debug\uniDBP.sqlproj.AssemblyReference.cache
+C:\Users\kyrylo\source\repos\DzBlazorServerAppRadzen\uniDBP\obj\Debug\uniDBP.dll
+C:\Users\kyrylo\source\repos\DzBlazorServerAppRadzen\uniDBP\obj\Debug\uniDBP.pdb

@@ -1,0 +1,260 @@
+﻿@page "/"
+@using DzBlazorServerAppRadzen.Data.Models;
+@using DzBlazorServerAppRadzen.Pages.Components
+@using dz.Data.DataAcces;
+@using dz.Data.Models;
+
+
+<PageTitle>Index</PageTitle>
+<Chart ChangeState=@ChangePopUpState popUpState=popUpState chartItems="chartItems"></Chart>
+<div @onclick="()=>popUpState = false">
+
+
+<RadzenButton ButtonStyle="ButtonStyle.Success" Icon="add_circle_outline" class="mt-2 mb-4" Text="Add New Facultet" Click="@InsertRow" Disabled=@(facultetToInsert != null || facultetToUpdate != null) />
+<div class="ChartButtom">
+    <RadzenButton Icon="assessment" ButtonStyle="ButtonStyle.Secondary" Variant="Variant.Outlined" Click="()=> ChangePopUpState()" Size="ButtonSize.Medium" @onclick:stopPropagation="true" />
+</div>
+
+
+<RadzenDataGrid @ref="facultetsGrid" AllowAlternatingRows="false" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true" EditMode="DataGridEditMode.Single"
+                Data="@facultets"  TItem="Facultet"  RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow" Sort="@Reset" Page="@Reset" Filter="@Reset" ColumnWidth="200px">
+    
+    <Columns>
+        <RadzenDataGridColumn TItem="Facultet" Property="Id" Title="id" Width="30px" Frozen="true">
+            <Template Context="facultet">
+                @if (facultet.Id != 0)
+                {       
+                    <p style="margin-bottom: 0;">@facultet.Id</p>
+                }
+            </Template>
+        </RadzenDataGridColumn>
+
+
+        <RadzenDataGridColumn TItem="Facultet" Property="name">
+            <Template Context="facultet">
+                <p style="white-space:pre-wrap; margin-bottom: 0;">@facultet.name</p>
+            </Template>
+            <EditTemplate Context="facultet">
+                <RadzenTextBox @bind-Value="facultet.name" Style="width:150px; display: block; text-wrap: wrap;" Name="name" />
+                <RadzenRequiredValidator Text="FacultetName is required" Component="name" Popup="true" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+
+        <RadzenDataGridColumn TItem="Facultet" Property="name" Title="Departaments">
+            <Template Context="facultet">
+
+                @foreach (var item in departamentAndFacultets)
+                {
+                    if (item.facultet_id == facultet.Id)
+                    {
+                        <p style="text-wrap: wrap">@departaments.Where(x => x.Id == item.departament_id).FirstOrDefault().name</p>
+                    }
+                }
+            </Template>
+            <EditTemplate Context="facultet">
+                <div class="CheckBoxListEditor" d-flex>
+                    <div class="TextBoxs" d-flex>
+                        @if (facultet.Id > 0)
+                        {
+                            @foreach (var item in departaments)
+                            {
+                                <RadzenTextBox @bind-Value="item.name" Change=@SaveDepartamentName Style="width:150px; display: block;" Name="name"></RadzenTextBox>
+                            }
+                        }
+                    </div>
+                    <RadzenCheckBoxList @onload="()=>UpdateUDList(facultet.Id)" @bind-Value=@updatedDapartaments TValue="Departament" Style="margin-top: 12px; margin-left: 15px" Orientation=Orientation.Vertical class="w-50">
+                        <Items>
+                            @if (facultet.Id > 0)
+                            {
+                                @foreach (var item in departaments)
+                                {
+                                    <RadzenCheckBoxListItem Text=@item.name Value=@item Style="margin-bottom: 19px; margin-top: 0px; align-items: flex-start;" />
+                                }
+                            }
+                        </Items>
+                    </RadzenCheckBoxList>
+                </div>
+            </EditTemplate>
+        </RadzenDataGridColumn>
+
+        <RadzenDataGridColumn TItem="Facultet" Property="note" Title="Note">
+            <Template Context="facultet">
+                <p style="white-space:pre-wrap; margin-bottom: 0;">@facultet.note</p>
+            </Template>
+            <EditTemplate Context="facultet">
+                <RadzenTextBox @bind-Value="facultet.note" Style="width:150px; display: block; text-wrap: wrap;" Name="note" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+
+        <RadzenDataGridColumn TItem="Facultet" Context="facultet" Width="80px" Filterable="false" Sortable="false" TextAlign="TextAlign.Right" Frozen="true" FrozenPosition="FrozenColumnPosition.Right">
+            <Template Context="facultet">
+                <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(args => EditRow(facultet))" @onclick:stopPropagation="true">
+                </RadzenButton>
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => DeleteRow(facultet))" @onclick:stopPropagation="true">
+                </RadzenButton>
+            </Template>
+            <EditTemplate Context="facultet">
+                <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@((args) => SaveRow(facultet))">
+                </RadzenButton>
+                <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@((args) => CancelEdit(facultet))">
+                </RadzenButton>
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => DeleteRow(facultet))">
+                </RadzenButton>
+            </EditTemplate>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+
+</div>
+@code {
+
+
+    [Inject]
+    public IFacultetsDataAcces FacultetsDataAcces { get; set; }
+    [Inject]
+    public IDepartamentsDataAcces DepartamentsDataAcces { get; set; }
+    [Inject]
+    public IDepartamentAndFacultetDataAcces DepartamentAndFacultetDataAcces { get; set; }
+    [Inject]
+    public IGroupsDataAcces groupsDataAcces { get; set; }
+    [Inject]
+    public IStudentsDataAcces studentsDataAcces { get; set; }
+
+    bool popUpState  = false;
+
+    RadzenDataGrid<Facultet> facultetsGrid;
+    IEnumerable<Facultet> facultets = Enumerable.Empty<Facultet>();
+    IEnumerable<Departament> departaments;
+    IEnumerable<Departament> updatedDapartaments = Enumerable.Empty<Departament>();
+    IEnumerable<DepartamentAndFacultet> departamentAndFacultets;
+    IEnumerable<Student> students;
+    IEnumerable<GroupModel> groups;
+    IEnumerable<ChartItem> chartItems;
+
+
+    Facultet ?facultetToInsert;
+    Facultet ?facultetToUpdate;
+
+    void ChangePopUpState()
+    {
+        popUpState = !popUpState;
+        Console.WriteLine(popUpState);
+    }
+
+    void UpdateUDList(int id)
+    {
+        updatedDapartaments = departaments.Where(x => departamentAndFacultets
+            .Where(x => x.facultet_id == id)
+            .Select(x => x.departament_id)
+            .Contains(x.Id));
+    }
+    void SaveDepartamentName(string name)
+    {
+        DepartamentsDataAcces.Update(new Departament{ Id = departaments.Where(x => x.name  == name).FirstOrDefault().Id, name = name});
+        Console.WriteLine(name);   
+    }
+    void Reset()
+    {
+        facultetToInsert = null;
+        facultetToUpdate = null;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        facultets = (await FacultetsDataAcces.GetAll());
+        departaments = (await DepartamentsDataAcces.GetAll());
+        departamentAndFacultets = (await DepartamentAndFacultetDataAcces.GetAll());
+        groups = (await groupsDataAcces.GetAll());
+        students = (await studentsDataAcces.GetAll());
+        chartItems = groups.Select(e => new ChartItem { group = e, avgMark = Decimal.ToDouble(students.Where(x => x.group_id == e.facultet_id).Average(x => x.avgMark)) });
+    }
+
+
+    async Task EditRow(Facultet facultet)
+    {
+        UpdateUDList(facultet.Id);
+        facultetToUpdate = facultet;
+        await facultetsGrid.EditRow(facultet);
+    } 
+    void OnUpdateRow(Facultet facultet)
+    {
+        Reset();
+        FacultetsDataAcces.Update(facultet);
+    }
+
+    async Task SaveRow(Facultet facultet)
+    {
+        var departamentsInFacultet = departaments.Where(x => departamentAndFacultets
+            .Where(x => x.facultet_id == facultet.Id)
+            .Select(x => x.departament_id)
+            .Contains(x.Id)).ToList();
+        var departamentsToDelete = departamentsInFacultet.Where(x => !updatedDapartaments.Contains(x)).ToList();
+        var departamentsToAdd = updatedDapartaments.Where(x => !departamentsInFacultet.Contains(x)).ToList();
+        foreach (var item in departamentsToDelete)
+        {
+            Console.WriteLine($"item to delete: {item.name}");
+            await DepartamentAndFacultetDataAcces.Delete(new DepartamentAndFacultet { departament_id = item.Id, facultet_id = facultet.Id });
+            foreach (var elem1 in departamentAndFacultets)
+            {
+                Console.WriteLine($"{elem1.facultet_id}, {elem1.departament_id}");
+            }
+            departamentAndFacultets = departamentAndFacultets.Where(x => x.departament_id != item.Id && x.facultet_id == facultet.Id || x.facultet_id != facultet.Id);
+            Console.WriteLine();
+            foreach (var elem2 in departamentAndFacultets)
+            {
+                Console.WriteLine($"{elem2.facultet_id}, {elem2.departament_id}");
+            }
+        }
+        foreach (var item in departamentsToAdd)
+        {
+            Console.WriteLine($"item to add: {item.name}");
+            await DepartamentAndFacultetDataAcces.Add(new DepartamentAndFacultet { departament_id = item.Id, facultet_id = facultet.Id });
+            departamentAndFacultets = departamentAndFacultets.Append(new DepartamentAndFacultet { departament_id = item.Id, facultet_id = facultet.Id });
+        }
+
+        await facultetsGrid.UpdateRow(facultet);
+        facultets = (await FacultetsDataAcces.GetAll());
+        Reset();
+        await facultetsGrid.Reload();
+
+
+
+    }
+
+    void CancelEdit(Facultet facultet)
+    {
+        Reset();
+
+        facultetsGrid.CancelEditRow(facultet);
+    }
+
+    async Task DeleteRow(Facultet facultet)
+    {
+        Reset();
+        if (facultets.Contains(facultet))
+        {
+            await FacultetsDataAcces.Delete(facultet.Id);
+            facultets = facultets.Where(x => x != facultet).ToList();
+            await facultetsGrid.Reload();
+        }
+        else
+        {
+            facultetsGrid.CancelEditRow(facultet);
+
+        }
+    }
+
+    async Task InsertRow()
+    {
+        facultetToInsert = new Facultet();
+        await facultetsGrid.InsertRow(facultetToInsert);
+    }
+
+    async void OnCreateRow(Facultet facultet)
+    {
+        await FacultetsDataAcces.Add(facultet);
+        Reset();
+    }
+    
+}

@@ -1,0 +1,25 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page">
+    <div class="sidebar">
+
+        <NavMenu SelectedHeader=@setHeaderName/>
+    </div>
+
+    <main>
+        <div class="top-row px-4">
+            @headerName
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+@code{
+    string headerName = "Факультети";
+    void setHeaderName(string name)
+    {
+        headerName = name;
+    }
+}

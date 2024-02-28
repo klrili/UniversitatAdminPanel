@@ -1,0 +1,10 @@
+.CheckBoxListEditor[b-jfkqyh73pg] {
+    display: flex !important;
+}
+.ChartButtom[b-jfkqyh73pg]{
+    position: absolute;
+    right: 0;
+    margin-right: 85px;
+    margin-top: 5px;
+    z-index: 999;
+}

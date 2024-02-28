@@ -1,0 +1,51 @@
+﻿<div class=" navbar navbar-dark">
+    <div class="container-fluid">
+        <button title="Navigation menu" class="navbar-button" @onclick="ToggleContentAsync">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<Collapse @ref="collapse1" Horizontal=true Toggle >
+
+    <div class="nav-scrollable">
+        <nav class="flex-column">
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="" Match="NavLinkMatch.All" @onclick='()=>changeHeaderName("Факультети")'>
+                    <span class="oi oi-home" aria-hidden="true"></span> Факультети
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="groups" @onclick='()=>changeHeaderName("Групи")'>
+                    <span class="oi oi-plus" aria-hidden="true"></span> Групи
+                </NavLink>
+            </div>
+            <div class="nav-item px-3">
+                <NavLink class="nav-link" href="students" @onclick='()=>changeHeaderName("Студенти")'>
+                    <span class="oi oi-list-rich" aria-hidden="true"></span> Студенти
+                </NavLink>
+            </div>
+        </nav>
+    </div>
+</Collapse>
+
+
+
+
+
+ @code {
+
+    [Parameter]
+    public EventCallback<string> SelectedHeader { get; set; }
+
+    private Collapse collapse1 = default!;
+
+    private void changeHeaderName(string name)
+    {
+        SelectedHeader.InvokeAsync(name);
+    }
+
+    private async Task ToggleContentAsync() => await collapse1.ToggleAsync();
+    
+
+}

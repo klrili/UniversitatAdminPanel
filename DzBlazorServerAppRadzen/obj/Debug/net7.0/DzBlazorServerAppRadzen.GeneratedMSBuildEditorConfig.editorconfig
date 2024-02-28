@@ -1,0 +1,57 @@
+is_global = true
+build_property.TargetFramework = net7.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = DzBlazorServerAppRadzen
+build_property.RootNamespace = DzBlazorServerAppRadzen
+build_property.ProjectDir = C:\Users\kyrylo\source\repos\DzBlazorServerAppRadzen\DzBlazorServerAppRadzen\
+build_property.RazorLangVersion = 7.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\kyrylo\source\repos\DzBlazorServerAppRadzen\DzBlazorServerAppRadzen
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/kyrylo/source/repos/DzBlazorServerAppRadzen/DzBlazorServerAppRadzen/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/kyrylo/source/repos/DzBlazorServerAppRadzen/DzBlazorServerAppRadzen/Pages/Groups.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR3JvdXBzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/kyrylo/source/repos/DzBlazorServerAppRadzen/DzBlazorServerAppRadzen/Pages/Students.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3R1ZGVudHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/kyrylo/source/repos/DzBlazorServerAppRadzen/DzBlazorServerAppRadzen/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/kyrylo/source/repos/DzBlazorServerAppRadzen/DzBlazorServerAppRadzen/Pages/Components/Chart.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29tcG9uZW50c1xDaGFydC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-qighzajknp
+
+[C:/Users/kyrylo/source/repos/DzBlazorServerAppRadzen/DzBlazorServerAppRadzen/Pages/Facultets.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRmFjdWx0ZXRzLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-jfkqyh73pg
+
+[C:/Users/kyrylo/source/repos/DzBlazorServerAppRadzen/DzBlazorServerAppRadzen/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-vau6tw534q
+
+[C:/Users/kyrylo/source/repos/DzBlazorServerAppRadzen/DzBlazorServerAppRadzen/Shared/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-vh1r1ehjy1
+
+[C:/Users/kyrylo/source/repos/DzBlazorServerAppRadzen/DzBlazorServerAppRadzen/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/kyrylo/source/repos/DzBlazorServerAppRadzen/DzBlazorServerAppRadzen/Pages/_Host.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0hvc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 

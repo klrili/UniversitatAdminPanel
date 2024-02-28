@@ -1,0 +1,183 @@
+﻿@page "/groups"
+
+
+@using dz.Data.DataAcces;
+@using dz.Data.Models;
+
+
+
+
+<PageTitle>Index</PageTitle>
+
+
+
+<RadzenButton ButtonStyle="ButtonStyle.Success" Icon="add_circle_outline" class="mt-2 mb-4" Text="Add New GroupModel" Click="@InsertRow" Disabled=@(grouptToInsert != null || grouptToUpdate != null) />
+<RadzenDataGrid @ref="facultetsGrid" AllowAlternatingRows="false" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true" EditMode="DataGridEditMode.Single"
+                Data="@groups" TItem="GroupModel" RowUpdate="@OnUpdateRow" RowCreate="@OnCreateRow" Sort="@Reset" Page="@Reset" Filter="@Reset" ColumnWidth="200px">
+
+    <Columns>
+        <RadzenDataGridColumn TItem="GroupModel" Property="Id" Title="id" Width="60px" Frozen="true">
+            <Template Context="groupModel">
+                @if (groupModel.Id != 0)
+                {
+                    <p style="margin-bottom: 0;">@groupModel.Id</p>
+                }
+            </Template>
+        </RadzenDataGridColumn>
+
+
+        <RadzenDataGridColumn TItem="GroupModel" Property="name" Title="groupName">
+            <Template Context="groupModel">
+                <p style="white-space:pre-wrap; margin-bottom: 0;">@groupModel.name</p>
+            </Template>
+            <EditTemplate Context="groupModel">
+                <RadzenTextBox @bind-Value="groupModel.name" Style="width:150px; display: block;" Name="name" />
+                <RadzenRequiredValidator Text="FacultetName is required" Component="name" Popup="true" />
+            </EditTemplate>
+        </RadzenDataGridColumn>
+
+        <RadzenDataGridColumn TItem="GroupModel" Property="name" Title="groupName">
+            <Template Context="groupModel">
+                <p style="white-space:pre-wrap; margin-bottom: 0;">@facultets.Where(x => x.Id == groupModel.facultet_id).FirstOrDefault()?.name</p>
+            </Template>
+            <EditTemplate Context="groupModel">
+
+                <RadzenDropDown @bind-Value="groupModel.facultet_id" Data="@facultets" TextProperty="name" ValueProperty="Id" Style="width:100%; display: block;" />
+                <RadzenRequiredValidator Text="FacultetName is required" Component="name" Popup="true" />
+
+            </EditTemplate>
+        </RadzenDataGridColumn>
+
+        <RadzenDataGridColumn TItem="GroupModel" Property="name" Title="students count">
+            <Template Context="groupModel">
+                <p style="margin-bottom: 0;">@students.Where(x => x.group_id == groupModel.facultet_id).Count()</p>
+            </Template>
+        </RadzenDataGridColumn>
+
+        <RadzenDataGridColumn TItem="GroupModel" Property="name" Title="students avg mark">
+            <Template Context="groupModel">
+                @if (students.Where(x => x.group_id == groupModel.facultet_id).Count() > 0)
+                {
+                    
+                    <p style="margin-bottom: 0;">@Math.Round(students.Where(x => x.group_id == groupModel.facultet_id).Average(x => x.avgMark), 2)</p>
+                }
+            </Template>
+        </RadzenDataGridColumn>
+
+        <RadzenDataGridColumn TItem="GroupModel" Context="groupModel" Width="100px" Filterable="false" Sortable="false" TextAlign="TextAlign.Right" Frozen="true" FrozenPosition="FrozenColumnPosition.Right">
+            <Template Context="groupModel">
+                <RadzenButton Icon="edit" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@(args => EditRow(groupModel))" @onclick:stopPropagation="true">
+                </RadzenButton>
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => DeleteRow(groupModel))" @onclick:stopPropagation="true">
+                </RadzenButton>
+            </Template>
+            <EditTemplate Context="groupModel">
+                <RadzenButton Icon="check" ButtonStyle="ButtonStyle.Success" Variant="Variant.Flat" Size="ButtonSize.Medium" Click="@((args) => SaveRow(groupModel))">
+                </RadzenButton>
+                <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light" Variant="Variant.Flat" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@((args) => CancelEdit(groupModel))">
+                </RadzenButton>
+                <RadzenButton ButtonStyle="ButtonStyle.Danger" Icon="delete" Variant="Variant.Flat" Shade="Shade.Lighter" Size="ButtonSize.Medium" class="my-1 ms-1" Click="@(args => DeleteRow(groupModel))">
+                </RadzenButton>
+            </EditTemplate>
+        </RadzenDataGridColumn>
+    </Columns>
+</RadzenDataGrid>
+
+
+@code {
+
+
+    [Inject]
+    public IFacultetsDataAcces facultetsDataAcces { get; set; }
+    [Inject]
+    public IGroupsDataAcces groupsDataAcces { get; set; }
+    [Inject]
+    public IStudentsDataAcces studentsDataAcces { get; set; }
+
+    RadzenDataGrid<GroupModel> facultetsGrid;
+    IEnumerable<GroupModel> groups;
+    IEnumerable<Facultet> facultets = Enumerable.Empty<Facultet>();
+    IEnumerable<Student> students;
+
+
+
+
+
+
+    GroupModel? grouptToInsert;
+    GroupModel? grouptToUpdate;
+
+
+    void Reset()
+    {
+        grouptToInsert = null;
+        grouptToUpdate = null;
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        groups = (await groupsDataAcces.GetAll());
+        facultets = (await facultetsDataAcces.GetAll());
+        students = (await studentsDataAcces.GetAll());
+    }
+
+
+    async Task EditRow(GroupModel groupModel)
+    {
+        grouptToUpdate = groupModel;
+        await facultetsGrid.EditRow(groupModel);
+    }
+    void OnUpdateRow(GroupModel groupModel)
+    {
+        Reset();
+        Console.WriteLine(groupModel.facultet_id);
+        groupsDataAcces.Update(groupModel);
+    }
+
+    async Task SaveRow(GroupModel groupModel)
+    {
+        await facultetsGrid.UpdateRow(groupModel);
+        groups = (await groupsDataAcces.GetAll());
+        Reset();
+        await facultetsGrid.Reload();
+
+    }
+
+    void CancelEdit(GroupModel groupModel)
+    {
+        Reset();
+
+        facultetsGrid.CancelEditRow(groupModel);
+    }
+
+    async Task DeleteRow(GroupModel groupModel)
+    {
+        Reset();
+        if (groups.Contains(groupModel))
+        {
+            await groupsDataAcces.Delete(groupModel.Id);
+            groups = groups.Where(x => x != groupModel).ToList();
+            await facultetsGrid.Reload();
+        }
+        else
+        {
+            facultetsGrid.CancelEditRow(groupModel);
+            await facultetsGrid.Reload();
+        }
+    }
+
+    async Task InsertRow()
+    {
+        grouptToInsert = new GroupModel();
+        await facultetsGrid.InsertRow(grouptToInsert);
+    }
+
+    async void OnCreateRow(GroupModel groupModel)
+    {
+        await groupsDataAcces.Add(groupModel);
+        Reset();
+    }
+
+}
+

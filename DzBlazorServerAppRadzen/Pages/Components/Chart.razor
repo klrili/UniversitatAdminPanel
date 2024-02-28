@@ -1,0 +1,71 @@
+﻿@using System.Globalization
+@using DzBlazorServerAppRadzen.Data.Models;
+@using dz.Data.Models;
+
+
+
+<div class="modal" tabindex="-1" role="dialog" style="display: @(popUpState ? "block" : "none")">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Mark Chart</h5>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12 my-5">
+                            <RadzenCard class="w-100 mb-4" Style="display: flex; align-items: center; gap: 0.5rem" >
+                                <RadzenCheckBox @bind-Value="@smooth" Name="smooth"></RadzenCheckBox>
+                                <RadzenLabel Text="Smooth" Component="smooth" Style="margin-right: 1rem;"/>
+                                <RadzenCheckBox @bind-Value="@showDataLabels" Name="dataLabels"></RadzenCheckBox>
+                                <RadzenLabel Text="Show Data Labels" Component="dataLabels" Style="margin-right: 1rem;" />
+                                <RadzenCheckBox @bind-Value="@showMarkers" Name="markers"></RadzenCheckBox>
+                                <RadzenLabel Text="Show Markers" Component="markers" />
+                            </RadzenCard>
+                            <RadzenChart>
+                                <RadzenLineSeries  Smooth="@smooth" Data="@chartItems" CategoryProperty="group.name" Title="2019" LineType="LineType.Dashed" ValueProperty="avgMark">
+                                    <RadzenMarkers Visible="@showMarkers" MarkerType="MarkerType.Square" />
+                                    <RadzenSeriesDataLabels Visible="@showDataLabels" />
+                                </RadzenLineSeries>
+
+                                <RadzenCategoryAxis Padding="20" />
+                                <RadzenValueAxis Formatter="@FormatAsMark">
+                                    <RadzenGridLines Visible="true" />
+                                    <RadzenAxisTitle Text="avg marks" />
+                                </RadzenValueAxis>
+                            </RadzenChart>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button @onclick="ChangeState" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public bool popUpState { get; set; }
+    [Parameter]
+    public IEnumerable<ChartItem> chartItems { get; set; }
+    [Parameter]
+    public EventCallback ChangeState { get; set; }
+    bool smooth = false;
+    bool showDataLabels = false;
+    bool showMarkers = true;
+
+
+
+  
+
+    string FormatAsMark(object value)
+    {
+        return Math.Round(((double)value), 2).ToString();
+    }
+
+
+
+
+}
